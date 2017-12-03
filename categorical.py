@@ -14,9 +14,7 @@ con.close()
 # create working dataframe with fields of interest
 df_games = df_all.loc[:,(
     'game.id','game.type',
-    'details.name', 'details.description',  'details.yearpublished',
-    'details.maxplayers', 'details.minplayers', 'details.minage', 
-    'details.maxplaytime', 'details.minplaytime', 'details.playingtime',
+    'details.name', 'details.description',  'details.yearpublished', 'details.maxplayers', 'details.minplayers', 'details.minage', 'details.maxplaytime', 'details.minplaytime', 'details.playingtime',
     'attributes.boardgamecategory', 'attributes.boardgamemechanic', 'attributes.boardgamepublisher',
     'stats.averageweight', 'stats.average')]
 
@@ -41,3 +39,10 @@ for i in category_list:
     d.append({'Avg_Rating': score, 'Game Type': i})
 df_categorymean = pd.DataFrame(d).sort_values(by='Avg_Rating', ascending=False)
 df_categorymean[:10]
+
+fig, (ax1, ax2) = plt.subplots(nrows=2, sharey=True, sharex=False, figsize=(12,6))
+fig.subplots_adjust(hspace=0.5)
+sns.barplot(x='Game Type', y='Avg_Rating', data=df_categorymean[:10], ax=ax1)
+sns.barplot(x='Game Type', y='Avg_Rating', data=df_categorymean[-10:], ax=ax2)
+ax1.title.set_text('Highest rated game categories')
+ax2.title.set_text('Lowest rated game categories')
