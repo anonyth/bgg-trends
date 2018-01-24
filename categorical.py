@@ -18,6 +18,7 @@ df_games = df_all.loc[:,(
     'attributes.boardgamecategory', 'attributes.boardgamemechanic', 'attributes.boardgamepublisher',
     'stats.averageweight', 'stats.average')]
 
+# build new dataframe with just id and category, filling empties with NaN, breaking out comma separated categories
 df_category = df_games.loc[:, ['game.id','attributes.boardgamecategory']]
 df_category['attributes.boardgamecategory'] = df_category['attributes.boardgamecategory'].fillna("None")
 df_category = df_category['attributes.boardgamecategory'].apply(lambda x: pd.Series(x.split(',')))
@@ -41,8 +42,11 @@ df_categorymean = pd.DataFrame(d).sort_values(by='Avg_Rating', ascending=False)
 df_categorymean[:10]
 
 fig, (ax1, ax2) = plt.subplots(nrows=2, sharey=True, sharex=False, figsize=(12,6))
-fig.subplots_adjust(hspace=0.5)
-sns.barplot(x='Game Type', y='Avg_Rating', data=df_categorymean[:10], ax=ax1)
-sns.barplot(x='Game Type', y='Avg_Rating', data=df_categorymean[-10:], ax=ax2)
+fig.subplots_adjust(hspace=1.0)
+sns.set_style("whitegrid")
+sns.barplot(x='Game Type', y='Avg_Rating', data=df_categorymean[:15], ax=ax1, palette="muted")
+sns.barplot(x='Game Type', y='Avg_Rating', data=df_categorymean[-15:], ax=ax2, palette="muted")
 ax1.title.set_text('Highest rated game categories')
+ax1.set_xticklabels(ax1.get_xticklabels(), rotation=90)
 ax2.title.set_text('Lowest rated game categories')
+ax2.set_xticklabels(ax2.get_xticklabels(), rotation=90)
